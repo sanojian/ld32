@@ -28,8 +28,8 @@ g_game.clubs = {
 		control: 8
 	},
 	wedge: {
-		powerX: 200,
-		powerY: 200,
+		powerX: 100,
+		powerY: 300,
 		control: 6
 	}
 };
@@ -38,8 +38,21 @@ g_game.holes = {
 	1: {
 		tee: { x: 40, y: 200},
 		ships: [
-			{ sprite: 'smallShip', x: 200, y: 200 }
+			{ sprite: 'smallShip', x: 300, y: 200 }
 		],
-		par: 3
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 320, y: 200 }
+		]
+	},
+	2: {
+		tee: { x: 100, y: 200},
+		ships: [
+			{ sprite: 'smallShip', x: 300, y: 200 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 200, y: 200 }
+		]
 	}
 };

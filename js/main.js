@@ -18,6 +18,7 @@ window.onload = function() {
 			this.load.image('preloaderBar', 'assets/gfx/loading-bar.png');
 			this.load.atlasJSONHash('assets', 'assets/gfx/sprites.png', null, g_game.spriteAtlas.assets);
 			this.load.atlasJSONHash('ui', 'assets/gfx/ui.png', null, g_game.spriteAtlas.ui);
+			this.game.load.bitmapFont('pressStart2p', 'assets/fonts/pressStart2p_0.png', 'assets/fonts/pressStart2p.xml');
 
 			//this.load.image('splashBackground', 'assets/gfx/Background.png');
 

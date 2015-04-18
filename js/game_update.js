@@ -7,7 +7,12 @@ GameState.prototype.update = function() {
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.alienShip, alienShipHit);
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.alienPilot, alienPilotHit);
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.tee);
+	this.game.physics.arcade.collide(g_game.golfBall, g_game.buildings);
 
+	// is ball out of bounds
+	if (g_game.golfBall.x > this.game.world.width || g_game.golfBall.x < 0 || g_game.golfBall.y > this.game.world.height) {
+		resetBall();
+	}
 	drawSwingMeter();
 
 
@@ -37,16 +42,23 @@ function drawSwingMeter() {
 }
 
 function alienShipHit() {
-	var hitTimer = g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.02, function() {
-		g_game.golfBall.kill();
-	}, this);
+	//g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.02, function() {
+	//	g_game.golfBall.kill();
+	//}, this);
+
 }
 
 function alienPilotHit() {
-	var hitTimer = g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.02, function() {
-		g_game.golfBall.kill();
-	}, this);
+	//g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.02, function() {
+	//	g_game.golfBall.kill();
+	//}, this);
 
 	g_game.alienPilot.body.acceleration.y = 0;
 	g_game.alienShip.body.acceleration.y = -g_game.gravity/2;
+
+	g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 2, function() {
+		g_game.currentHole = 2;
+		g_game.golfBall.game.state.start('game');
+	}, this);
+
 }

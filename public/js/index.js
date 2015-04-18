@@ -18,6 +18,7 @@ window.onload = function() {
 			this.load.image('preloaderBar', 'assets/gfx/loading-bar.png');
 			this.load.atlasJSONHash('assets', 'assets/gfx/sprites.png', null, g_game.spriteAtlas.assets);
 			this.load.atlasJSONHash('ui', 'assets/gfx/ui.png', null, g_game.spriteAtlas.ui);
+			this.game.load.bitmapFont('pressStart2p', 'assets/fonts/pressStart2p_0.png', 'assets/fonts/pressStart2p.xml');
 
 			//this.load.image('splashBackground', 'assets/gfx/Background.png');
 
@@ -84,8 +85,8 @@ g_game.clubs = {
 		control: 8
 	},
 	wedge: {
-		powerX: 200,
-		powerY: 200,
+		powerX: 100,
+		powerY: 300,
 		control: 6
 	}
 };
@@ -94,9 +95,22 @@ g_game.holes = {
 	1: {
 		tee: { x: 40, y: 200},
 		ships: [
-			{ sprite: 'smallShip', x: 200, y: 200 }
+			{ sprite: 'smallShip', x: 300, y: 200 }
 		],
-		par: 3
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 320, y: 200 }
+		]
+	},
+	2: {
+		tee: { x: 100, y: 200},
+		ships: [
+			{ sprite: 'smallShip', x: 300, y: 200 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 200, y: 200 }
+		]
 	}
 };
 /**
@@ -136,11 +150,41 @@ GameState.prototype.create = function() {
 		startX += 40;
 	}
 
+	g_game.txtHole = this.game.add.bitmapText(400, 20, 'pressStart2p', 'Hole ' + g_game.currentHole, 12);
+	g_game.txtHole.tint = 0xff0000;
+	g_game.txtHole.anchor.setTo(0.5, 0.5);
+
+	g_game.txtPar = this.game.add.bitmapText(400, 40, 'pressStart2p', 'Par ' + g_game.holes[g_game.currentHole].par, 12);
+	g_game.txtPar.tint = 0xff0000;
+	g_game.txtPar.anchor.setTo(0.5, 0.5);
+
+	g_game.currentStroke = 1;
+	g_game.txtStroke = this.game.add.bitmapText(400, 60, 'pressStart2p', 'Stroke ' + g_game.currentStroke, 12);
+	g_game.txtStroke.tint = 0xff0000;
+	g_game.txtStroke.anchor.setTo(0.5, 0.5);
+
+
 	//chooseClub(g_game.clubButtons[g_game.currentClub]);
 
 	this.game.physics.arcade.gravity.y = g_game.gravity;
 
+	g_game.bBallInAir = false;
 };
+
+function resetBall() {
+	var hole = g_game.holes[g_game.currentHole];
+
+	g_game.golfBall.x = hole.tee.x;
+	g_game.golfBall.y = hole.tee.y-8;
+	g_game.golfBall.body.velocity.x = 0;
+	g_game.golfBall.body.velocity.y = 0;
+
+	g_game.bBallInAir = false;
+	g_game.bSwinging = false;
+	g_game.swingPower = 0;
+	g_game.currentStroke++;
+	g_game.txtStroke.setText('Stroke ' + g_game.currentStroke);
+}
 
 function loadHole(game) {
 	var hole = g_game.holes[g_game.currentHole];
@@ -148,9 +192,7 @@ function loadHole(game) {
 	g_game.golfBall = game.add.sprite(hole.tee.x, hole.tee.y-8, 'assets', 'golfBall');
 	g_game.golfBall.anchor.setTo(0.5, 0.5);
 	game.physics.enable(g_game.golfBall, Phaser.Physics.ARCADE);
-	//g_game.golfBall.body.bounce.setTo(1, 1);
-
-	g_game.golfBall.body.collideWorldBounds = true;
+	g_game.golfBall.body.bounce.setTo(0.5, 0.5);
 
 	g_game.tee = game.add.sprite(hole.tee.x, hole.tee.y, 'assets', 'tee');
 	g_game.tee.anchor.setTo(0.5, 0.5);
@@ -172,6 +214,17 @@ function loadHole(game) {
 	g_game.alienPilot.body.mass = 4;
 
 	g_game.alienPilot.body.acceleration.y = -g_game.gravity;
+
+	g_game.buildings = game.add.group();
+	for (var i=0; i<hole.buildings.length; i++) {
+		var building = game.add.sprite(hole.buildings[0].x, hole.buildings[0].y, 'assets', hole.buildings[0].sprite);
+		building.anchor.setTo(0.5, 1);
+		game.physics.enable(building, Phaser.Physics.ARCADE);
+		building.body.immovable = true;
+		building.body.acceleration.y = -g_game.gravity;
+		g_game.buildings.add(building);
+	}
+
 
 }
 
@@ -223,7 +276,12 @@ GameState.prototype.update = function() {
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.alienShip, alienShipHit);
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.alienPilot, alienPilotHit);
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.tee);
+	this.game.physics.arcade.collide(g_game.golfBall, g_game.buildings);
 
+	// is ball out of bounds
+	if (g_game.golfBall.x > this.game.world.width || g_game.golfBall.x < 0 || g_game.golfBall.y > this.game.world.height) {
+		resetBall();
+	}
 	drawSwingMeter();
 
 
@@ -253,18 +311,25 @@ function drawSwingMeter() {
 }
 
 function alienShipHit() {
-	var hitTimer = g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.02, function() {
-		g_game.golfBall.kill();
-	}, this);
+	//g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.02, function() {
+	//	g_game.golfBall.kill();
+	//}, this);
+
 }
 
 function alienPilotHit() {
-	var hitTimer = g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.02, function() {
-		g_game.golfBall.kill();
-	}, this);
+	//g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.02, function() {
+	//	g_game.golfBall.kill();
+	//}, this);
 
 	g_game.alienPilot.body.acceleration.y = 0;
 	g_game.alienShip.body.acceleration.y = -g_game.gravity/2;
+
+	g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 2, function() {
+		g_game.currentHole = 2;
+		g_game.golfBall.game.state.start('game');
+	}, this);
+
 }
 /**
  * Created by jonas on 2015-04-18.
@@ -277,7 +342,9 @@ g_game.spriteAtlas.assets = {
 		golfBall: { frame: { x: 0, y: 0, w: 3, h: 3 } },
 		tee: { frame: { x: 0, y: 10, w: 21, h: 6 } },
 		alienPilot: { frame: { x: 0, y: 4, w: 5, h: 5 } },
-		smallShip: { frame: { x: 8, y: 0, w: 13, h: 7 } }
+		smallShip: { frame: { x: 8, y: 0, w: 13, h: 7 } },
+
+		building: { frame: { x: 24, y: 0, w: 8, h: 32 } }
 	}
 };
 

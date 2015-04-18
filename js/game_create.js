@@ -35,11 +35,41 @@ GameState.prototype.create = function() {
 		startX += 40;
 	}
 
+	g_game.txtHole = this.game.add.bitmapText(400, 20, 'pressStart2p', 'Hole ' + g_game.currentHole, 12);
+	g_game.txtHole.tint = 0xff0000;
+	g_game.txtHole.anchor.setTo(0.5, 0.5);
+
+	g_game.txtPar = this.game.add.bitmapText(400, 40, 'pressStart2p', 'Par ' + g_game.holes[g_game.currentHole].par, 12);
+	g_game.txtPar.tint = 0xff0000;
+	g_game.txtPar.anchor.setTo(0.5, 0.5);
+
+	g_game.currentStroke = 1;
+	g_game.txtStroke = this.game.add.bitmapText(400, 60, 'pressStart2p', 'Stroke ' + g_game.currentStroke, 12);
+	g_game.txtStroke.tint = 0xff0000;
+	g_game.txtStroke.anchor.setTo(0.5, 0.5);
+
+
 	//chooseClub(g_game.clubButtons[g_game.currentClub]);
 
 	this.game.physics.arcade.gravity.y = g_game.gravity;
 
+	g_game.bBallInAir = false;
 };
+
+function resetBall() {
+	var hole = g_game.holes[g_game.currentHole];
+
+	g_game.golfBall.x = hole.tee.x;
+	g_game.golfBall.y = hole.tee.y-8;
+	g_game.golfBall.body.velocity.x = 0;
+	g_game.golfBall.body.velocity.y = 0;
+
+	g_game.bBallInAir = false;
+	g_game.bSwinging = false;
+	g_game.swingPower = 0;
+	g_game.currentStroke++;
+	g_game.txtStroke.setText('Stroke ' + g_game.currentStroke);
+}
 
 function loadHole(game) {
 	var hole = g_game.holes[g_game.currentHole];
@@ -47,9 +77,7 @@ function loadHole(game) {
 	g_game.golfBall = game.add.sprite(hole.tee.x, hole.tee.y-8, 'assets', 'golfBall');
 	g_game.golfBall.anchor.setTo(0.5, 0.5);
 	game.physics.enable(g_game.golfBall, Phaser.Physics.ARCADE);
-	//g_game.golfBall.body.bounce.setTo(1, 1);
-
-	g_game.golfBall.body.collideWorldBounds = true;
+	g_game.golfBall.body.bounce.setTo(0.5, 0.5);
 
 	g_game.tee = game.add.sprite(hole.tee.x, hole.tee.y, 'assets', 'tee');
 	g_game.tee.anchor.setTo(0.5, 0.5);
@@ -71,6 +99,17 @@ function loadHole(game) {
 	g_game.alienPilot.body.mass = 4;
 
 	g_game.alienPilot.body.acceleration.y = -g_game.gravity;
+
+	g_game.buildings = game.add.group();
+	for (var i=0; i<hole.buildings.length; i++) {
+		var building = game.add.sprite(hole.buildings[0].x, hole.buildings[0].y, 'assets', hole.buildings[0].sprite);
+		building.anchor.setTo(0.5, 1);
+		game.physics.enable(building, Phaser.Physics.ARCADE);
+		building.body.immovable = true;
+		building.body.acceleration.y = -g_game.gravity;
+		g_game.buildings.add(building);
+	}
+
 
 }
 
