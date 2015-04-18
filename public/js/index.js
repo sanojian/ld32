@@ -17,6 +17,7 @@ window.onload = function() {
 
 			this.load.image('preloaderBar', 'assets/gfx/loading-bar.png');
 			this.load.atlasJSONHash('assets', 'assets/gfx/sprites.png', null, g_game.spriteAtlas.assets);
+			this.load.atlasJSONHash('ui', 'assets/gfx/ui.png', null, g_game.spriteAtlas.ui);
 
 			//this.load.image('splashBackground', 'assets/gfx/Background.png');
 
@@ -75,12 +76,12 @@ g_game.clubs = {
 	wood: {
 		powerX: 400,
 		powerY: 100,
-		control: 2
+		control: 4
 	},
 	iron: {
 		powerX: 300,
 		powerY: 100,
-		control: 10
+		control: 8
 	},
 	wedge: {
 		powerX: 200,
@@ -91,7 +92,11 @@ g_game.clubs = {
 
 g_game.holes = {
 	1: {
-		tee: { x: 40, y: 300}
+		tee: { x: 40, y: 200},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 200 }
+		],
+		par: 3
 	}
 };
 /**
@@ -103,35 +108,7 @@ GameState.prototype.create = function() {
 	this.game.stage.smoothed = false;
 	this.game.stage.disableVisibilityChange = true;
 
-	g_game.golfBall = this.game.add.sprite(60, 200, 'assets', 'golfBall');
-	g_game.golfBall.anchor.setTo(0.5, 0.5);
-	this.game.physics.enable(g_game.golfBall, Phaser.Physics.ARCADE);
-	//g_game.golfBall.body.bounce.setTo(1, 1);
-
-	g_game.golfBall.body.collideWorldBounds = true;
-	//g_game.golfBall.body.velocity.x = 200;
-	//g_game.golfBall.body.velocity.y = -100;
-
-	g_game.tee = this.game.add.sprite(g_game.golfBall.x, g_game.golfBall.y + 4, 'assets', 'tee');
-	g_game.tee.anchor.setTo(0.5, 0.5);
-	this.game.physics.enable(g_game.tee, Phaser.Physics.ARCADE);
-	g_game.tee.body.acceleration.y = -g_game.gravity;
-	g_game.tee.body.immovable = true;
-
-
-	g_game.alienShip = this.game.add.sprite(300, 200, 'assets', 'ship');
-	g_game.alienShip.anchor.setTo(0.5, 0.5);
-	this.game.physics.enable(g_game.alienShip, Phaser.Physics.ARCADE);
-
-	g_game.alienShip.body.acceleration.y = -g_game.gravity;
-	g_game.alienShip.body.immovable = true;
-
-	g_game.alienPilot = this.game.add.sprite(g_game.alienShip.x, g_game.alienShip.y-4, 'assets', 'alienPilot');
-	g_game.alienPilot.anchor.setTo(0.5, 0.5);
-	this.game.physics.enable(g_game.alienPilot, Phaser.Physics.ARCADE);
-	g_game.alienPilot.body.mass = 4;
-
-	g_game.alienPilot.body.acceleration.y = -g_game.gravity;
+	loadHole(this.game);
 
 	g_game.swingPower = 0;
 	g_game.swingMeter = this.game.add.bitmapData(80, 80);
@@ -142,9 +119,71 @@ GameState.prototype.create = function() {
 	swingMeterSprite.input.useHandCursor = true;
 
 
+	// UI
+	g_game.clubButtons = {};
+	var startX = 10;
+	var startY = 100;
+	for (var key in g_game.clubs) {
+		var button = this.game.add.sprite(startX, startY, 'ui', 'button_' + key);
+		button.inputEnabled = true;
+		button.clubType = key;
+		button.input.useHandCursor = true;
+		button.events.onInputDown.add(chooseClub, button);
+
+		button.alpha = key == g_game.currentClub ? 1 : 0.3;
+
+		g_game.clubButtons[key] = button;
+		startX += 40;
+	}
+
+	//chooseClub(g_game.clubButtons[g_game.currentClub]);
+
 	this.game.physics.arcade.gravity.y = g_game.gravity;
 
 };
+
+function loadHole(game) {
+	var hole = g_game.holes[g_game.currentHole];
+
+	g_game.golfBall = game.add.sprite(hole.tee.x, hole.tee.y-8, 'assets', 'golfBall');
+	g_game.golfBall.anchor.setTo(0.5, 0.5);
+	game.physics.enable(g_game.golfBall, Phaser.Physics.ARCADE);
+	//g_game.golfBall.body.bounce.setTo(1, 1);
+
+	g_game.golfBall.body.collideWorldBounds = true;
+
+	g_game.tee = game.add.sprite(hole.tee.x, hole.tee.y, 'assets', 'tee');
+	g_game.tee.anchor.setTo(0.5, 0.5);
+	game.physics.enable(g_game.tee, Phaser.Physics.ARCADE);
+	g_game.tee.body.acceleration.y = -g_game.gravity;
+	g_game.tee.body.immovable = true;
+
+
+	g_game.alienShip = game.add.sprite(hole.ships[0].x, hole.ships[0].y, 'assets', hole.ships[0].sprite);
+	g_game.alienShip.anchor.setTo(0.5, 0.5);
+	game.physics.enable(g_game.alienShip, Phaser.Physics.ARCADE);
+
+	g_game.alienShip.body.acceleration.y = -g_game.gravity;
+	g_game.alienShip.body.immovable = true;
+
+	g_game.alienPilot = game.add.sprite(g_game.alienShip.x, g_game.alienShip.y-4, 'assets', 'alienPilot');
+	g_game.alienPilot.anchor.setTo(0.5, 0.5);
+	game.physics.enable(g_game.alienPilot, Phaser.Physics.ARCADE);
+	g_game.alienPilot.body.mass = 4;
+
+	g_game.alienPilot.body.acceleration.y = -g_game.gravity;
+
+}
+
+function chooseClub() {
+
+	for (var key in g_game.clubButtons) {
+		g_game.clubButtons[key].alpha = 0.3;
+	}
+
+	this.alpha = 1;
+	g_game.currentClub = this.clubType;
+}
 
 function startSwing() {
 	if (g_game.bBallInAir) {
@@ -185,6 +224,13 @@ GameState.prototype.update = function() {
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.alienPilot, alienPilotHit);
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.tee);
 
+	drawSwingMeter();
+
+
+};
+
+function drawSwingMeter() {
+	g_game.swingMeter.clear();
 	g_game.swingMeter.ctx.strokeStyle = '#FFFFFF';
 	g_game.swingMeter.ctx.beginPath();
 	g_game.swingMeter.ctx.arc(g_game.swingMeter.width/2, g_game.swingMeter.height/2, g_game.swingMeter.width/2, 0, 2*Math.PI);
@@ -192,7 +238,7 @@ GameState.prototype.update = function() {
 
 	if (g_game.bSwinging) {
 		//g_game.swingPower += 0.1;
-		g_game.swingPower = (g_game.swingPower + 0.1) % (Math.PI*2);
+		g_game.swingPower = (g_game.swingPower + (11 - g_game.clubs[g_game.currentClub].control)/35) % (Math.PI*2);
 	}
 
 	g_game.swingMeter.ctx.fillStyle = '#00FF00';
@@ -204,7 +250,7 @@ GameState.prototype.update = function() {
 
 	g_game.swingMeter.dirty = true;
 
-};
+}
 
 function alienShipHit() {
 	var hitTimer = g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.02, function() {
@@ -231,6 +277,14 @@ g_game.spriteAtlas.assets = {
 		golfBall: { frame: { x: 0, y: 0, w: 3, h: 3 } },
 		tee: { frame: { x: 0, y: 10, w: 21, h: 6 } },
 		alienPilot: { frame: { x: 0, y: 4, w: 5, h: 5 } },
-		ship: { frame: { x: 8, y: 0, w: 13, h: 7 } }
+		smallShip: { frame: { x: 8, y: 0, w: 13, h: 7 } }
+	}
+};
+
+g_game.spriteAtlas.ui = {
+	frames: {
+		button_wood: { frame: { x: 0, y: 0, w: 32, h: 32 } },
+		button_iron: { frame: { x: 32, y: 0, w: 32, h: 32 } },
+		button_wedge: { frame: { x: 0, y: 32, w: 32, h: 32 } },
 	}
 };

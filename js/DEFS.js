@@ -20,12 +20,12 @@ g_game.clubs = {
 	wood: {
 		powerX: 400,
 		powerY: 100,
-		control: 2
+		control: 4
 	},
 	iron: {
 		powerX: 300,
 		powerY: 100,
-		control: 10
+		control: 8
 	},
 	wedge: {
 		powerX: 200,
@@ -36,6 +36,10 @@ g_game.clubs = {
 
 g_game.holes = {
 	1: {
-		tee: { x: 40, y: 300}
+		tee: { x: 40, y: 200},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 200 }
+		],
+		par: 3
 	}
 };
