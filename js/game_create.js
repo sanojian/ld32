@@ -48,7 +48,6 @@ GameState.prototype.create = function() {
 
 	this.game.physics.arcade.gravity.y = g_game.gravity;
 
-	//this.game.input.onTap.add(hitBall, this);
 };
 
 function startSwing() {

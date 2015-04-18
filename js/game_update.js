@@ -8,21 +8,21 @@ GameState.prototype.update = function() {
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.alienPilot, alienPilotHit);
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.tee);
 
-	//g_game.swingMeter.circle(50, 50, 50, 'rgba(0, 255, 0, 1)');
 	g_game.swingMeter.ctx.strokeStyle = '#FFFFFF';
 	g_game.swingMeter.ctx.beginPath();
-	g_game.swingMeter.ctx.arc(40,40,40,0,2*Math.PI);
+	g_game.swingMeter.ctx.arc(g_game.swingMeter.width/2, g_game.swingMeter.height/2, g_game.swingMeter.width/2, 0, 2*Math.PI);
 	g_game.swingMeter.ctx.stroke();
 
 	if (g_game.bSwinging) {
-		g_game.swingPower += 0.1;
+		//g_game.swingPower += 0.1;
+		g_game.swingPower = (g_game.swingPower + 0.1) % (Math.PI*2);
 	}
 
 	g_game.swingMeter.ctx.fillStyle = '#00FF00';
 	g_game.swingMeter.ctx.beginPath();
-	g_game.swingMeter.ctx.moveTo(40, 40);
-	g_game.swingMeter.ctx.lineTo(40, 0);
-	g_game.swingMeter.ctx.arc(40, 40, 40, 0 - Math.PI/2, g_game.swingPower - Math.PI/2);
+	g_game.swingMeter.ctx.moveTo(g_game.swingMeter.width/2, g_game.swingMeter.height/2);
+	g_game.swingMeter.ctx.lineTo(g_game.swingMeter.width/2, 0);
+	g_game.swingMeter.ctx.arc(g_game.swingMeter.width/2, g_game.swingMeter.height/2, g_game.swingMeter.width/2, 0 - Math.PI/2, g_game.swingPower - Math.PI/2);
 	g_game.swingMeter.ctx.fill();
 
 	g_game.swingMeter.dirty = true;
