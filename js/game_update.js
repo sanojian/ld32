@@ -4,7 +4,8 @@
 
 GameState.prototype.update = function() {
 
-	this.game.physics.arcade.collide(g_game.golfBall, g_game.alienShip);
+	this.game.physics.arcade.collide(g_game.golfBall, g_game.alienShip, alienShipHit);
+	this.game.physics.arcade.collide(g_game.golfBall, g_game.alienPilot, alienPilotHit);
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.tee);
 
 	//g_game.swingMeter.circle(50, 50, 50, 'rgba(0, 255, 0, 1)');
@@ -27,3 +28,18 @@ GameState.prototype.update = function() {
 	g_game.swingMeter.dirty = true;
 
 };
+
+function alienShipHit() {
+	var hitTimer = g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.02, function() {
+		g_game.golfBall.kill();
+	}, this);
+}
+
+function alienPilotHit() {
+	var hitTimer = g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.02, function() {
+		g_game.golfBall.kill();
+	}, this);
+
+	g_game.alienPilot.body.acceleration.y = 0;
+	g_game.alienShip.body.acceleration.y = -g_game.gravity/2;
+}

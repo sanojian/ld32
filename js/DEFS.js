@@ -11,5 +11,31 @@ window.g_game = {
 	scale: 1,
 	masterVolume: 0,//.3,
 	gravity: 200,      // pixels/second/second
-	sfx: {}
+	sfx: {},
+	currentHole: 1,
+	currentClub: 'wedge'
+};
+
+g_game.clubs = {
+	wood: {
+		powerX: 400,
+		powerY: 100,
+		control: 2
+	},
+	iron: {
+		powerX: 300,
+		powerY: 100,
+		control: 10
+	},
+	wedge: {
+		powerX: 200,
+		powerY: 200,
+		control: 6
+	}
+};
+
+g_game.holes = {
+	1: {
+		tee: { x: 40, y: 300}
+	}
 };
