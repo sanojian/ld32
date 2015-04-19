@@ -18,7 +18,8 @@ window.onload = function() {
 			this.load.image('preloaderBar', 'assets/gfx/loading-bar.png');
 			this.load.atlasJSONHash('assets', 'assets/gfx/sprites.png', null, g_game.spriteAtlas.assets);
 			this.load.atlasJSONHash('ui', 'assets/gfx/ui.png', null, g_game.spriteAtlas.ui);
-			this.game.load.bitmapFont('pressStart2p', 'assets/fonts/pressStart2p_0.png', 'assets/fonts/pressStart2p.xml');
+			this.load.bitmapFont('pressStart2p', 'assets/fonts/pressStart2p_0.png', 'assets/fonts/pressStart2p.xml');
+			this.load.image("background", "assets/gfx/background.png");
 
 			//this.load.image('splashBackground', 'assets/gfx/Background.png');
 
@@ -28,8 +29,8 @@ window.onload = function() {
 			this.game.stage.smoothed = false;
 			this.scale.minWidth = g_game.baseWidth;
 			this.scale.minHeight = g_game.baseHeight;
-			this.scale.maxWidth = g_game.baseWidth * 2;
-			this.scale.maxHeight = g_game.baseHeight * 2;
+			this.scale.maxWidth = g_game.baseWidth * g_game.scale;
+			this.scale.maxHeight = g_game.baseHeight * g_game.scale;
 			this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			this.scale.pageAlignHorizontally = true;
 			this.scale.pageAlignVertically = true;

@@ -6,43 +6,47 @@ window.g_game = {
 	sounds: {},
 	gameWidth: window.innerWidth * window.devicePixelRatio,
 	gameHeight: window.innerHeight * window.devicePixelRatio,
-	baseWidth: 480,
-	baseHeight: 320,
-	scale: 1,
+	//baseWidth: 480,
+	//baseHeight: 320,
+	//scale: 2,
+	baseWidth: 300,
+	baseHeight: 200,
+	scale: 3,
 	masterVolume: 0,//.3,
 	gravity: 200,      // pixels/second/second
 	sfx: {},
 	currentHole: 1,
+	score: 0,
 	currentClub: 'wedge'
 };
 
 g_game.clubs = {
 	wood: {
-		powerX: 400,
-		powerY: 100,
+		powerX: 300,
+		powerY: 75,
 		control: 4
 	},
 	iron: {
-		powerX: 300,
-		powerY: 100,
+		powerX: 160,
+		powerY: 160,
 		control: 8
 	},
 	wedge: {
-		powerX: 100,
-		powerY: 300,
+		powerX: 75,
+		powerY: 260,
 		control: 6
 	}
 };
 
 g_game.holes = {
 	1: {
-		tee: { x: 40, y: 200},
+		tee: { x: 20, y: 140},
 		ships: [
-			{ sprite: 'smallShip', x: 300, y: 200 }
+			{ sprite: 'smallShip', x: 200, y: 140 }
 		],
 		par: 3,
 		buildings: [
-			{ sprite: 'building', x: 320, y: 200 }
+			{ sprite: 'building', x: 220, y: 140 }
 		]
 	},
 	2: {
