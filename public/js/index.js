@@ -75,7 +75,8 @@ window.g_game = {
 	sfx: {},
 	currentHole: 1,
 	score: 0,
-	currentClub: 'wedge'
+	misses: 0,
+	currentClub: 'wood'
 };
 
 g_game.clubs = {
@@ -98,7 +99,7 @@ g_game.clubs = {
 
 g_game.holes = {
 	1: {
-		tee: { x: 20, y: 140},
+		tee: { x: 20, y: 150},
 		ships: [
 			{ sprite: 'smallShip', x: 200, y: 140 }
 		],
@@ -108,13 +109,83 @@ g_game.holes = {
 		]
 	},
 	2: {
-		tee: { x: 100, y: 200},
+		tee: { x: 20, y: 150},
 		ships: [
-			{ sprite: 'smallShip', x: 300, y: 200 }
+			{ sprite: 'smallShip', x: 200, y: 140 }
 		],
 		par: 3,
 		buildings: [
-			{ sprite: 'building', x: 200, y: 200 }
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	3: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	4: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	5: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	6: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	7: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	8: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	9: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
 		]
 	}
 };
@@ -153,6 +224,10 @@ GameState.prototype.create = function() {
 	cloudTimer.start();
 
 
+	for (var b=0; b<g_game.misses; b++) {
+		var destroyedBuilding = this.game.add.sprite(72+ 7*b, 88 , 'assets', 'building_destroyed');
+	}
+
 	g_game.swingPower = 0;
 	g_game.swingMeter = this.game.add.bitmapData(64, 64);
 	var swingMeterSprite = this.game.add.sprite(4, 4, g_game.swingMeter);
@@ -161,6 +236,10 @@ GameState.prototype.create = function() {
 	swingMeterSprite.events.onInputUp.add(hitBall, this);
 	swingMeterSprite.input.useHandCursor = true;
 
+	//g_game.blastArea = this.game.add.bitmapData(209, 109);
+	//this.game.add.sprite(72, 91, g_game.blastArea);
+	g_game.blastArea = this.game.add.bitmapData(300, 200);
+	this.game.add.sprite(0, 0, g_game.blastArea);
 
 	// UI
 	g_game.clubButtons = {};
@@ -216,19 +295,28 @@ function resetBall() {
 		return;
 	}
 
-	var hole = g_game.holes[g_game.currentHole];
-
-	g_game.golfBall.x = hole.tee.x;
-	g_game.golfBall.y = hole.tee.y-8;
-	g_game.golfBall.body.velocity.x = 0;
-	g_game.golfBall.body.velocity.y = 0;
-
 	g_game.bBallInAir = false;
-	g_game.swingDirection = 1;
-	g_game.bSwinging = false;
-	g_game.swingPower = 0;
-	g_game.currentStroke++;
-	g_game.txtStroke.setText('Stroke ' + g_game.currentStroke);
+	g_game.misses++;
+	g_game.bShipBlasting = true;
+	g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 2, function() {
+		g_game.blastArea.clear();
+		g_game.golfBall.game.add.sprite(72 + 7*(g_game.misses-1), 88 , 'assets', 'building_destroyed');
+
+		var hole = g_game.holes[g_game.currentHole];
+
+		g_game.golfBall.x = hole.tee.x;
+		g_game.golfBall.y = hole.tee.y-8;
+		g_game.golfBall.body.velocity.x = 0;
+		g_game.golfBall.body.velocity.y = 0;
+
+		g_game.swingDirection = 1;
+		g_game.bSwinging = false;
+		g_game.swingPower = 0;
+		g_game.currentStroke++;
+		g_game.txtStroke.setText('Stroke ' + g_game.currentStroke);
+
+		g_game.bShipBlasting = false;
+	}, this);
 }
 
 function checkHoleOver() {
@@ -269,7 +357,9 @@ function checkHoleOver() {
 
 function nextHole() {
 	g_game.score += g_game.currentStroke - g_game.holes[g_game.currentHole].par;
-	g_game.currentHole = 2;
+	g_game.currentHole++;
+
+	// TODO: check if game over
 	g_game.golfBall.game.state.start('game');
 }
 
@@ -368,11 +458,21 @@ GameState.prototype.update = function() {
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.buildings);
 
 	// is ball out of bounds
-	if (g_game.golfBall.x > this.game.world.width || g_game.golfBall.x < 0 || g_game.golfBall.y > this.game.world.height) {
-		resetBall();
+	if (g_game.bBallInAir) {
+		if (g_game.golfBall.x > this.game.world.width || g_game.golfBall.x < 0 || g_game.golfBall.y > this.game.world.height) {
+			resetBall();
+		}
 	}
 
-	// clouds out of bounds
+	// if alien shooting
+	if (g_game.bShipBlasting) {
+		g_game.blastArea.clear();
+		g_game.blastArea.ctx.strokeStyle = Math.random() > 0.3 ? '#DAD45E' : '#D27D2C';
+		g_game.blastArea.ctx.beginPath();
+		g_game.blastArea.ctx.moveTo(g_game.alienShip.x, g_game.alienShip.y);
+		g_game.blastArea.ctx.lineTo(75 + 7*(g_game.misses-1), 98);
+		g_game.blastArea.ctx.stroke();
+	}
 
 	drawSwingMeter();
 
@@ -416,9 +516,10 @@ function alienShipHit(ball, ship) {
 	//	g_game.golfBall.kill();
 	//}, this);
 
+	ship.frameName = 'smallShip_damaged';
 	ship.hitPoints -= 1;
 	if (ship.hitPoints <= 0) {
-		g_game.alienPilot.body.acceleration.y = 0;
+		g_game.alienPilot.body.acceleration.y = -g_game.gravity/2;
 		g_game.alienShip.body.acceleration.y = -g_game.gravity/2;
 		checkHoleOver();
 		g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 2, nextHole, this);
@@ -449,10 +550,14 @@ g_game.spriteAtlas.assets = {
 	frames: {
 		golfBall: { frame: { x: 0, y: 0, w: 4, h: 4 } },
 		tee: { frame: { x: 0, y: 27, w: 24, h: 8 } },
-		alienPilot: { frame: { x: 0, y: 19, w: 7, h: 8 } },
-		smallShip: { frame: { x: 0, y: 10, w: 17, h: 8 } },
+		alienPilot: { frame: { x: 0, y: 18, w: 7, h: 8 } },
+		smallShip: { frame: { x: 0, y: 104, w: 25, h: 17 } },
+		smallShip1: { frame: { x: 26, y: 104, w: 25, h: 17 } },
+		smallShip_damaged: { frame: { x: 52, y: 104, w: 25, h: 17 } },
+		smallShip1_damaged: { frame: { x: 78, y: 104, w: 25, h: 17 } },
 
-		building: { frame: { x: 24, y: 0, w: 8, h: 32 } },
+		building: { frame: { x: 0, y: 68, w: 10, h: 34 } },
+		building_destroyed: { frame: { x: 0, y: 124, w: 6, h: 12 } },
 
 		cloud: { frame: { x: 0, y: 40, w: 60, h: 24 } }
 	}

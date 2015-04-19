@@ -33,6 +33,10 @@ GameState.prototype.create = function() {
 	cloudTimer.start();
 
 
+	for (var b=0; b<g_game.misses; b++) {
+		var destroyedBuilding = this.game.add.sprite(72+ 7*b, 88 , 'assets', 'building_destroyed');
+	}
+
 	g_game.swingPower = 0;
 	g_game.swingMeter = this.game.add.bitmapData(64, 64);
 	var swingMeterSprite = this.game.add.sprite(4, 4, g_game.swingMeter);
@@ -41,6 +45,10 @@ GameState.prototype.create = function() {
 	swingMeterSprite.events.onInputUp.add(hitBall, this);
 	swingMeterSprite.input.useHandCursor = true;
 
+	//g_game.blastArea = this.game.add.bitmapData(209, 109);
+	//this.game.add.sprite(72, 91, g_game.blastArea);
+	g_game.blastArea = this.game.add.bitmapData(300, 200);
+	this.game.add.sprite(0, 0, g_game.blastArea);
 
 	// UI
 	g_game.clubButtons = {};
@@ -96,19 +104,28 @@ function resetBall() {
 		return;
 	}
 
-	var hole = g_game.holes[g_game.currentHole];
-
-	g_game.golfBall.x = hole.tee.x;
-	g_game.golfBall.y = hole.tee.y-8;
-	g_game.golfBall.body.velocity.x = 0;
-	g_game.golfBall.body.velocity.y = 0;
-
 	g_game.bBallInAir = false;
-	g_game.swingDirection = 1;
-	g_game.bSwinging = false;
-	g_game.swingPower = 0;
-	g_game.currentStroke++;
-	g_game.txtStroke.setText('Stroke ' + g_game.currentStroke);
+	g_game.misses++;
+	g_game.bShipBlasting = true;
+	g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 2, function() {
+		g_game.blastArea.clear();
+		g_game.golfBall.game.add.sprite(72 + 7*(g_game.misses-1), 88 , 'assets', 'building_destroyed');
+
+		var hole = g_game.holes[g_game.currentHole];
+
+		g_game.golfBall.x = hole.tee.x;
+		g_game.golfBall.y = hole.tee.y-8;
+		g_game.golfBall.body.velocity.x = 0;
+		g_game.golfBall.body.velocity.y = 0;
+
+		g_game.swingDirection = 1;
+		g_game.bSwinging = false;
+		g_game.swingPower = 0;
+		g_game.currentStroke++;
+		g_game.txtStroke.setText('Stroke ' + g_game.currentStroke);
+
+		g_game.bShipBlasting = false;
+	}, this);
 }
 
 function checkHoleOver() {
@@ -149,7 +166,9 @@ function checkHoleOver() {
 
 function nextHole() {
 	g_game.score += g_game.currentStroke - g_game.holes[g_game.currentHole].par;
-	g_game.currentHole = 2;
+	g_game.currentHole++;
+
+	// TODO: check if game over
 	g_game.golfBall.game.state.start('game');
 }
 

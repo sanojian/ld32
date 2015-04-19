@@ -17,7 +17,8 @@ window.g_game = {
 	sfx: {},
 	currentHole: 1,
 	score: 0,
-	currentClub: 'wedge'
+	misses: 0,
+	currentClub: 'wood'
 };
 
 g_game.clubs = {
@@ -40,7 +41,7 @@ g_game.clubs = {
 
 g_game.holes = {
 	1: {
-		tee: { x: 20, y: 140},
+		tee: { x: 20, y: 150},
 		ships: [
 			{ sprite: 'smallShip', x: 200, y: 140 }
 		],
@@ -50,13 +51,83 @@ g_game.holes = {
 		]
 	},
 	2: {
-		tee: { x: 100, y: 200},
+		tee: { x: 20, y: 150},
 		ships: [
-			{ sprite: 'smallShip', x: 300, y: 200 }
+			{ sprite: 'smallShip', x: 200, y: 140 }
 		],
 		par: 3,
 		buildings: [
-			{ sprite: 'building', x: 200, y: 200 }
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	3: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	4: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	5: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	6: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	7: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	8: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
+		]
+	},
+	9: {
+		tee: { x: 20, y: 150},
+		ships: [
+			{ sprite: 'smallShip', x: 200, y: 140 }
+		],
+		par: 3,
+		buildings: [
+			{ sprite: 'building', x: 220, y: 140 }
 		]
 	}
 };

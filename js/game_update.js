@@ -10,11 +10,21 @@ GameState.prototype.update = function() {
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.buildings);
 
 	// is ball out of bounds
-	if (g_game.golfBall.x > this.game.world.width || g_game.golfBall.x < 0 || g_game.golfBall.y > this.game.world.height) {
-		resetBall();
+	if (g_game.bBallInAir) {
+		if (g_game.golfBall.x > this.game.world.width || g_game.golfBall.x < 0 || g_game.golfBall.y > this.game.world.height) {
+			resetBall();
+		}
 	}
 
-	// clouds out of bounds
+	// if alien shooting
+	if (g_game.bShipBlasting) {
+		g_game.blastArea.clear();
+		g_game.blastArea.ctx.strokeStyle = Math.random() > 0.3 ? '#DAD45E' : '#D27D2C';
+		g_game.blastArea.ctx.beginPath();
+		g_game.blastArea.ctx.moveTo(g_game.alienShip.x, g_game.alienShip.y);
+		g_game.blastArea.ctx.lineTo(75 + 7*(g_game.misses-1), 98);
+		g_game.blastArea.ctx.stroke();
+	}
 
 	drawSwingMeter();
 
@@ -58,9 +68,10 @@ function alienShipHit(ball, ship) {
 	//	g_game.golfBall.kill();
 	//}, this);
 
+	ship.frameName = 'smallShip_damaged';
 	ship.hitPoints -= 1;
 	if (ship.hitPoints <= 0) {
-		g_game.alienPilot.body.acceleration.y = 0;
+		g_game.alienPilot.body.acceleration.y = -g_game.gravity/2;
 		g_game.alienShip.body.acceleration.y = -g_game.gravity/2;
 		checkHoleOver();
 		g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 2, nextHole, this);
