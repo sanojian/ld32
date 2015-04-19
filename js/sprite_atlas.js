@@ -14,7 +14,8 @@ g_game.spriteAtlas.assets = {
 		smallShip_damaged: { frame: { x: 52, y: 104, w: 25, h: 17 } },
 		smallShip1_damaged: { frame: { x: 78, y: 104, w: 25, h: 17 } },
 
-		building: { frame: { x: 0, y: 68, w: 10, h: 34 } },
+		building: { frame: { x: 0, y: 68, w: 14, h: 34 } },
+		building2: { frame: { x: 18, y: 86, w: 11, h: 15 } },
 		building_destroyed1: { frame: { x: 0, y: 121, w: 6, h: 15 } },
 		building_destroyed2: { frame: { x: 7, y: 121, w: 6, h: 15 } },
 		building_destroyed3: { frame: { x: 14, y: 121, w: 6, h: 15 } },

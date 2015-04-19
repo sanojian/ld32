@@ -7,7 +7,7 @@ GameState.prototype.update = function() {
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.alienShip, alienShipHit);
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.alienPilot, alienPilotHit);
 	this.game.physics.arcade.collide(g_game.golfBall, g_game.tee);
-	this.game.physics.arcade.collide(g_game.golfBall, g_game.buildings);
+	this.game.physics.arcade.collide(g_game.golfBall, g_game.buildings, ricochet);
 
 	// is ball out of bounds
 	if (g_game.bBallInAir) {
@@ -29,6 +29,10 @@ GameState.prototype.update = function() {
 	drawSwingMeter();
 
 };
+
+function ricochet() {
+	g_game.sfx.ricochet.play();
+}
 
 function drawSwingMeter() {
 	g_game.swingMeter.clear();
@@ -92,7 +96,7 @@ function alienPilotHit() {
 	//g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.02, function() {
 	//	g_game.golfBall.kill();
 	//}, this);
-
+	g_game.sfx.drive.play();
 	g_game.alienPilot.body.acceleration.y = 0;
 	g_game.alienShip.body.acceleration.y = -g_game.gravity/2;
 

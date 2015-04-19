@@ -13,6 +13,9 @@ GameState.prototype.create = function() {
 	g_game.sfx.ship_falling = this.game.add.audio('ship_falling');
 	g_game.sfx.ship_shoot = this.game.add.audio('ship_shoot');
 	g_game.sfx.building_done = this.game.add.audio('building_done');
+	g_game.sfx.ricochet = this.game.add.audio('ricochet');
+	g_game.sfx.laugh = this.game.add.audio('laugh');
+	g_game.sfx.laugh2 = this.game.add.audio('laugh2');
 
 
 	this.game.add.image(0, 0, 'background');
@@ -144,9 +147,30 @@ function resetBall() {
 		var destoyedBuilding = g_game.golfBall.game.add.sprite(72+ 7*(g_game.misses-1), 85 , 'assets', 'building_destroyed' + (1 + Math.floor(Math.random() * 4)));
 		showExplosion(destoyedBuilding.x + destoyedBuilding.width/2 -1, destoyedBuilding.y);
 		g_game.sfx.building_done.play();
+		g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.5, function() {
+			g_game.sfx['laugh' + (Math.random() > 0.5 ? '2' : '')].play();
+		}, this);
+
+
+		g_game.bShipBlasting = false;
+		if (g_game.misses >= 30) {
+			var excuse = g_game.excuses[Math.floor(Math.random() * g_game.excuses.length)];
+			var txtLoseGame = g_game.golfBall.game.add.bitmapText(g_game.baseWidth/2, g_game.baseHeight/2-30, 'pressStart2p', excuse, 16);
+			txtLoseGame.tint = g_game.textColor;
+			txtLoseGame.anchor.setTo(0.5, 0.5);
+			txtLoseGame.inputEnabled = true;
+			txtLoseGame.input.useHandCursor = true;
+			txtLoseGame.events.onInputDown.add(function() {
+				g_game.currentHole = 1;
+				g_game.score = 0;
+				g_game.misses = 0;
+				g_game.golfBall.game.state.start('game');
+			}, txtLoseGame);
+
+			return;
+		}
 
 		var hole = g_game.holes[g_game.currentHole];
-
 		g_game.golfBall.x = hole.tee.x;
 		g_game.golfBall.y = hole.tee.y-8;
 		g_game.golfBall.body.velocity.x = 0;
@@ -158,7 +182,7 @@ function resetBall() {
 		g_game.currentStroke++;
 		g_game.txtStroke.setText('Stroke ' + g_game.currentStroke);
 
-		g_game.bShipBlasting = false;
+
 	}, this);
 }
 
@@ -202,7 +226,23 @@ function nextHole() {
 	g_game.score += g_game.currentStroke - g_game.holes[g_game.currentHole].par;
 	g_game.currentHole++;
 
-	// TODO: check if game over
+	// check if game over
+	if (g_game.currentHole > 9) {
+		var txtWinGame = g_game.golfBall.game.add.bitmapText(g_game.baseWidth/2, 2*g_game.baseHeight/3, 'pressStart2p', '  City saved!\nNow you can play\n  in peace.', 16);
+		txtWinGame.tint = g_game.textColor;
+		txtWinGame.anchor.setTo(0.5, 0.5);
+		txtWinGame.inputEnabled = true;
+		txtWinGame.input.useHandCursor = true;
+		txtWinGame.events.onInputDown.add(function() {
+			g_game.currentHole = 1;
+			g_game.score = 0;
+			g_game.misses = 0;
+			g_game.golfBall.game.state.start('game');
+		}, txtWinGame);
+
+		return;
+
+	}
 	g_game.golfBall.game.state.start('game');
 }
 

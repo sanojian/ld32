@@ -27,6 +27,9 @@ window.onload = function() {
 			this.game.load.audio('ship_falling', ['assets/audio/sfx/ship_falling.wav']);
 			this.game.load.audio('ship_shoot', ['assets/audio/sfx/ship_shoot.wav']);
 			this.game.load.audio('building_done', ['assets/audio/sfx/building_done.wav']);
+			this.game.load.audio('ricochet', ['assets/audio/sfx/ricochet.wav']);
+			this.game.load.audio('laugh', ['assets/audio/sfx/laugh.wav']);
+			this.game.load.audio('laugh2', ['assets/audio/sfx/laugh2.wav']);
 
 			//this.load.image('splashBackground', 'assets/gfx/Background.png');
 

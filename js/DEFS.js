@@ -19,7 +19,12 @@ window.g_game = {
 	score: 0,
 	misses: 0,
 	currentClub: 'wood',
-	textColor: 0xD04648
+	textColor: 0xD04648,
+	excuses: [
+		'The sun was in\n   my eyes.',
+		'Wait, these are\n not my clubs.',
+		'Why does this\nwind keep changing?'
+	]
 };
 
 g_game.clubs = {
@@ -48,7 +53,7 @@ g_game.holes = {
 		],
 		par: 3,
 		buildings: [
-			{ sprite: 'building', x: 220, y: 140 }
+			{ sprite: 'building', x: 224, y: 140 }
 		]
 	},
 	2: {
@@ -56,7 +61,7 @@ g_game.holes = {
 		ships: [
 			{ sprite: 'smallShip', x: 200, y: 140 }
 		],
-		par: 3,
+		par: 4,
 		buildings: [
 			{ sprite: 'building', x: 120, y: 140 }
 		]
@@ -66,7 +71,7 @@ g_game.holes = {
 		ships: [
 			{ sprite: 'smallShip', x: 250, y: 160 }
 		],
-		par: 3,
+		par: 4,
 		buildings: [
 			{ sprite: 'building', x: 160, y: 140 },
 			{ sprite: 'building', x: 280, y: 160 }
@@ -77,59 +82,67 @@ g_game.holes = {
 		ships: [
 			{ sprite: 'smallShip', x: 200, y: 140 }
 		],
-		par: 3,
+		par: 4,
 		buildings: [
-			{ sprite: 'building', x: 220, y: 140 }
+			{ sprite: 'building', x: 220, y: 140 },
+			{ sprite: 'building2', x: 120, y: 140 }
 		]
 	},
-	5: {
-		tee: { x: 20, y: 150},
+	5: {    // par 15
+		tee: { x: 20, y: 180},
 		ships: [
-			{ sprite: 'smallShip', x: 200, y: 140 }
+			{ sprite: 'smallShip', x: 90, y: 120 }
 		],
-		par: 3,
+		par: 5,
 		buildings: [
-			{ sprite: 'building', x: 220, y: 140 }
+			{ sprite: 'building', x: 60, y: 120 },
+			{ sprite: 'building2', x: 120, y: 140 },
+			{ sprite: 'building2', x: 90, y: 160 }
 		]
 	},
 	6: {
 		tee: { x: 20, y: 150},
 		ships: [
-			{ sprite: 'smallShip', x: 200, y: 140 }
+			{ sprite: 'smallShip', x: 200, y: 180 }
 		],
-		par: 3,
+		par: 4,
 		buildings: [
-			{ sprite: 'building', x: 220, y: 140 }
+			{ sprite: 'building', x: 170, y: 160 },
+			{ sprite: 'building2', x: 230, y: 160 }
 		]
 	},
-	7: {
-		tee: { x: 20, y: 150},
+	7: {    // par 22
+		tee: { x: 60, y: 180},
 		ships: [
 			{ sprite: 'smallShip', x: 200, y: 140 }
 		],
-		par: 3,
+		par: 5,
 		buildings: [
-			{ sprite: 'building', x: 220, y: 140 }
+			{ sprite: 'building', x: 220, y: 140 },
+			{ sprite: 'building2', x: 194, y: 120 },
+			{ sprite: 'building2', x: 206, y: 120 },
+			{ sprite: 'building', x: 180, y: 132 }
 		]
 	},
 	8: {
 		tee: { x: 20, y: 150},
 		ships: [
-			{ sprite: 'smallShip', x: 200, y: 140 }
+			{ sprite: 'smallShip', x: 268, y: 114 }
 		],
-		par: 3,
+		par: 4,
 		buildings: [
-			{ sprite: 'building', x: 220, y: 140 }
+			{ sprite: 'building2', x: 200, y: 140 }
 		]
 	},
 	9: {
 		tee: { x: 20, y: 150},
 		ships: [
-			{ sprite: 'smallShip', x: 200, y: 140 }
+			{ sprite: 'smallShip', x: 80, y: 180 }
 		],
-		par: 3,
+		par: 4,
 		buildings: [
-			{ sprite: 'building', x: 220, y: 140 }
+			{ sprite: 'building', x: 60, y: 160 },
+			{ sprite: 'building', x: 120, y: 160 }
 		]
 	}
 };
