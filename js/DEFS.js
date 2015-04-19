@@ -58,17 +58,18 @@ g_game.holes = {
 		],
 		par: 3,
 		buildings: [
-			{ sprite: 'building', x: 220, y: 140 }
+			{ sprite: 'building', x: 120, y: 140 }
 		]
 	},
 	3: {
 		tee: { x: 20, y: 150},
 		ships: [
-			{ sprite: 'smallShip', x: 200, y: 140 }
+			{ sprite: 'smallShip', x: 250, y: 160 }
 		],
 		par: 3,
 		buildings: [
-			{ sprite: 'building', x: 220, y: 140 }
+			{ sprite: 'building', x: 160, y: 140 },
+			{ sprite: 'building', x: 280, y: 160 }
 		]
 	},
 	4: {

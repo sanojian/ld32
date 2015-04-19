@@ -123,17 +123,18 @@ g_game.holes = {
 		],
 		par: 3,
 		buildings: [
-			{ sprite: 'building', x: 220, y: 140 }
+			{ sprite: 'building', x: 120, y: 140 }
 		]
 	},
 	3: {
 		tee: { x: 20, y: 150},
 		ships: [
-			{ sprite: 'smallShip', x: 200, y: 140 }
+			{ sprite: 'smallShip', x: 250, y: 160 }
 		],
 		par: 3,
 		buildings: [
-			{ sprite: 'building', x: 220, y: 140 }
+			{ sprite: 'building', x: 160, y: 140 },
+			{ sprite: 'building', x: 280, y: 160 }
 		]
 	},
 	4: {
@@ -440,7 +441,7 @@ function loadHole(game) {
 
 	g_game.buildings = game.add.group();
 	for (var i=0; i<hole.buildings.length; i++) {
-		var building = game.add.sprite(hole.buildings[0].x, hole.buildings[0].y, 'assets', hole.buildings[0].sprite);
+		var building = game.add.sprite(hole.buildings[i].x, hole.buildings[i].y, 'assets', hole.buildings[i].sprite);
 		building.anchor.setTo(0.5, 1);
 		game.physics.enable(building, Phaser.Physics.ARCADE);
 		building.body.immovable = true;

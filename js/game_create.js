@@ -241,7 +241,7 @@ function loadHole(game) {
 
 	g_game.buildings = game.add.group();
 	for (var i=0; i<hole.buildings.length; i++) {
-		var building = game.add.sprite(hole.buildings[0].x, hole.buildings[0].y, 'assets', hole.buildings[0].sprite);
+		var building = game.add.sprite(hole.buildings[i].x, hole.buildings[i].y, 'assets', hole.buildings[i].sprite);
 		building.anchor.setTo(0.5, 1);
 		game.physics.enable(building, Phaser.Physics.ARCADE);
 		building.body.immovable = true;
