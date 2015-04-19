@@ -121,6 +121,8 @@ GameState.prototype.create = function() {
 	g_game.bBallInAir = false;
 	g_game.swingDirection = 1;
 	g_game.bHoleOver = false;
+
+	playMusic();
 };
 
 function showExplosion(x, y) {
@@ -243,7 +245,21 @@ function nextHole() {
 		return;
 
 	}
+
 	g_game.golfBall.game.state.start('game');
+}
+
+function playMusic() {
+	if (g_game.holes[g_game.currentHole].music) {
+		if (g_game.music) {
+			g_game.music.stop();
+		}
+		g_game.music = g_game.golfBall.game.add.audio(g_game.holes[g_game.currentHole].music);
+		if (g_game.music) {
+			g_game.music.loop = true;
+			g_game.music.play();
+		}
+	}
 }
 
 function loadHole(game) {

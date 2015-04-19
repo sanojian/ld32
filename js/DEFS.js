@@ -54,7 +54,8 @@ g_game.holes = {
 		par: 3,
 		buildings: [
 			{ sprite: 'building', x: 224, y: 140 }
-		]
+		],
+		music: 'squiggy'
 	},
 	2: {
 		tee: { x: 20, y: 150},
@@ -86,7 +87,8 @@ g_game.holes = {
 		buildings: [
 			{ sprite: 'building', x: 220, y: 140 },
 			{ sprite: 'building2', x: 120, y: 140 }
-		]
+		],
+		music: 'somber'
 	},
 	5: {    // par 15
 		tee: { x: 20, y: 180},
@@ -122,7 +124,8 @@ g_game.holes = {
 			{ sprite: 'building2', x: 194, y: 120 },
 			{ sprite: 'building2', x: 206, y: 120 },
 			{ sprite: 'building', x: 180, y: 132 }
-		]
+		],
+		music: 'getitdone'
 	},
 	8: {
 		tee: { x: 20, y: 150},
