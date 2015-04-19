@@ -18,7 +18,8 @@ window.g_game = {
 	currentHole: 1,
 	score: 0,
 	misses: 0,
-	currentClub: 'wood'
+	currentClub: 'wood',
+	textColor: 0xD04648
 };
 
 g_game.clubs = {

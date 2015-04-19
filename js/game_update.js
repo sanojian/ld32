@@ -68,12 +68,20 @@ function alienShipHit(ball, ship) {
 	//	g_game.golfBall.kill();
 	//}, this);
 
+	g_game.sfx.hit_ship.play();
 	ship.frameName = 'smallShip_damaged';
+	ship.animations.stop();
+	ship.animations.play('hover_damaged', 10, true);
 	ship.hitPoints -= 1;
 	if (ship.hitPoints <= 0) {
+		g_game.sfx.ship_falling.play();
 		g_game.alienPilot.body.acceleration.y = -g_game.gravity/2;
 		g_game.alienShip.body.acceleration.y = -g_game.gravity/2;
 		checkHoleOver();
+		g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
+			showExplosion(g_game.alienShip.x, g_game.alienShip.y);
+			g_game.sfx.ship_done.play();
+		}, this);
 		g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 2, nextHole, this);
 
 	}

@@ -15,7 +15,18 @@ g_game.spriteAtlas.assets = {
 		smallShip1_damaged: { frame: { x: 78, y: 104, w: 25, h: 17 } },
 
 		building: { frame: { x: 0, y: 68, w: 10, h: 34 } },
-		building_destroyed: { frame: { x: 0, y: 124, w: 6, h: 12 } },
+		building_destroyed1: { frame: { x: 0, y: 121, w: 6, h: 15 } },
+		building_destroyed2: { frame: { x: 7, y: 121, w: 6, h: 15 } },
+		building_destroyed3: { frame: { x: 14, y: 121, w: 6, h: 15 } },
+		building_destroyed4: { frame: { x: 21, y: 121, w: 6, h: 15 } },
+
+		explosion1: { frame: { x: 0, y: 139, w: 7, h: 12 } },
+		explosion2: { frame: { x: 7, y: 139, w: 7, h: 12 } },
+		explosion3: { frame: { x: 14, y: 139, w: 7, h: 12 } },
+		explosion4: { frame: { x: 21, y: 139, w: 7, h: 12 } },
+		explosion5: { frame: { x: 28, y: 139, w: 7, h: 12 } },
+		explosion6: { frame: { x: 35, y: 139, w: 7, h: 12 } },
+		explosion7: { frame: { x: 42, y: 139, w: 7, h: 12 } },
 
 		cloud: { frame: { x: 0, y: 40, w: 60, h: 24 } }
 	}

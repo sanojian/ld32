@@ -21,6 +21,13 @@ window.onload = function() {
 			this.load.bitmapFont('pressStart2p', 'assets/fonts/pressStart2p_0.png', 'assets/fonts/pressStart2p.xml');
 			this.load.image("background", "assets/gfx/background.png");
 
+			this.game.load.audio('drive', ['assets/audio/sfx/drive.wav']);
+			this.game.load.audio('hit_ship', ['assets/audio/sfx/hit_ship.wav']);
+			this.game.load.audio('ship_done', ['assets/audio/sfx/ship_done.wav']);
+			this.game.load.audio('ship_falling', ['assets/audio/sfx/ship_falling.wav']);
+			this.game.load.audio('ship_shoot', ['assets/audio/sfx/ship_shoot.wav']);
+			this.game.load.audio('building_done', ['assets/audio/sfx/building_done.wav']);
+
 			//this.load.image('splashBackground', 'assets/gfx/Background.png');
 
 		},
