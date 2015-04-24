@@ -143,7 +143,7 @@ function resetBall() {
 	g_game.misses++;
 	g_game.bShipBlasting = true;
 	g_game.sfx.ship_shoot.play();
-	g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 2, function() {
+	g_game.golfBall.game.time.events.add(Phaser.Timer.SECOND * 0.7, function() {
 		g_game.blastArea.clear();
 		// add destroyed building
 		var destoyedBuilding = g_game.golfBall.game.add.sprite(72+ 7*(g_game.misses-1), 85 , 'assets', 'building_destroyed' + (1 + Math.floor(Math.random() * 4)));
